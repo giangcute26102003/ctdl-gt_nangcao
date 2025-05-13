@@ -1,24 +1,39 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class toBinary {
-    public static ArrayList<Integer> toBinary(int num) {
-        ArrayList binary = new ArrayList();
-        if (num == 0) return binary;
-        if(num % 2 == 0){
-            binary.add(0);
-            toBinary(num/2);
-        }
-        else {
-            binary.add(1);
-            toBinary(num/2);
-        }
-        return binary;
-    }
-    public static void main(String[] args) {
-        for (int i = 0; i < 10; i++) {
 
+    private static Queue<Integer> toBinaryHelper(int num , Queue<Integer> queue) {
+        if (num == 0) {
+            if (queue.isEmpty()) queue.add(0); // handle trường hợp đặc biệt: 0
+            return queue;
         }
-        System.out.println(toBinary(100));
+        toBinaryHelper(num / 2, queue); // gọi trước để đảm bảo bit cao nhất vào trước
+        queue.add(num % 2); // thêm bit vào queue
+        return queue;
     }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Integer n = sc.nextInt();
+        Integer[] arr = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = sc.nextInt();
+        }
+        for (int i = 0; i < n; i++) {
+            Queue<Integer> binary = new LinkedList<Integer>();
+            binary = toBinaryHelper(arr[i], binary);
+            if(binary.peek() == 0) binary.poll();
+            while (!binary.isEmpty()) {
+                System.out.print(binary.poll());
+            }
+            System.out.println();
+        }
+
+    }
+
+
 }
